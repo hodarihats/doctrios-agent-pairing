@@ -35,9 +35,9 @@ Two VMs (miles apart) run Hermes agents managing redundant Doctrios deployments 
 
 4. **Coordinate via HTTP health API**:
    ```bash
-   # Each agent exposes: http://localhost:9119/health
-   # Check peer: curl -s http://<peer-ip>:9119/health
-   curl -sf http://<peer-ip>:9119/health || echo "PEER DOWN"
+   # Each agent exposes: http://localhost:9119/api/health
+   # Check peer: curl -s http://<peer-ip>:9119/api/health
+   curl -sf http://<peer-ip>:9119/api/health || echo "PEER DOWN"
    ```
 
 ### Agent Role Assignment:
@@ -53,14 +53,14 @@ PEER_IP="${PEER_IP:-127.0.0.1}"  # Set via env or SSH tunnel
 MY_ROLE="${ROLE:-primary}"         # primary or secondary
 
 # Check local service
-if curl -sf http://localhost:4100/health | grep -q "ok"; then
+if curl -sf http://localhost:4100/api/health | grep -q "ok"; then
   LOCAL="healthy"
 else
   LOCAL="down"
 fi
 
 # Check peer service
-if curl -sf http://${PEER_IP}:9119/health | grep -q "ok"; then
+if curl -sf http://${PEER_IP}:9119/api/health | grep -q "ok"; then
   PEER="healthy"  
 else
   PEER="down"
